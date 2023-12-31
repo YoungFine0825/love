@@ -53,14 +53,23 @@ else()
 	set(LOVE_TARGET_PLATFORM x86)
 endif()
 
-# if(APPLE)
-# 	option(LOVE_JIT "Use LuaJIT" FALSE)
-# else()
-# 	option(LOVE_JIT "Use LuaJIT" TRUE)
-# endif()
-
-#We disable luajit when require a lua version heigher than 5.1.
-option(LOVE_JIT "Use LuaJIT" FALSE)
+if(APPLE)
+	option(LOVE_JIT "Use LuaJIT" FALSE)
+else()
+	if(MEGA)
+		string(COMPARE GREATER ${MEGA_LUA_VER} "5.1.5" is_lua_greater_than_5_1_5)
+		if(is_lua_greater_than_5_1_5)
+			message(STATUS "Lua version is ${MEGA_LUA_VER}")
+			message(STATUS "We disable luajit when require a lua version heigher than 5.1.5")
+			#We disable luajit when require a lua version heigher than 5.1.
+			option(LOVE_JIT "Use LuaJIT" FALSE)
+		else()
+			option(LOVE_JIT "Use LuaJIT" TRUE)
+		endif()
+	else()
+		option(LOVE_JIT "Use LuaJIT" TRUE)
+	endif()
+endif()
 
 option(LOVE_MPG123 "Use mpg123" TRUE)
 

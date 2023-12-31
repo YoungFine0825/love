@@ -53,11 +53,15 @@ else()
 	set(LOVE_TARGET_PLATFORM x86)
 endif()
 
-if(APPLE)
-	option(LOVE_JIT "Use LuaJIT" FALSE)
-else()
-	option(LOVE_JIT "Use LuaJIT" TRUE)
-endif()
+# if(APPLE)
+# 	option(LOVE_JIT "Use LuaJIT" FALSE)
+# else()
+# 	option(LOVE_JIT "Use LuaJIT" TRUE)
+# endif()
+
+#We disable luajit when require a lua version heigher than 5.1.
+option(LOVE_JIT "Use LuaJIT" FALSE)
+
 option(LOVE_MPG123 "Use mpg123" TRUE)
 
 if(LOVE_JIT)
@@ -163,7 +167,7 @@ if(MEGA)
 			${MEGA_LUAJIT_DLL}
 		)
 	else()
-		set(LOVE_LUA_LIBRARY ${MEGA_LUA51})
+		set(LOVE_LUA_LIBRARY ${MEGA_LUA})
 
 		set(LOVE_LINK_LIBRARIES
 			${LOVE_LINK_LIBRARIES}
@@ -173,7 +177,7 @@ if(MEGA)
 			${LOVE_MOVE_DLLS}
 			${LOVE_LUA_LIBRARY}
 		)
-		# MEGA_LUA51 is a CMake target, so includes are handled
+		# MEGA_LUA is a CMake target, so includes are handled
 		# automatically.
 	endif()
 else()
@@ -239,7 +243,7 @@ Please see https://github.com/love2d/megasource
 		set(LOVE_LUA_LIBRARY ${LUAJIT_LIBRARY})
 		set(LOVE_LUA_INCLUDE_DIR ${LUAJIT_INCLUDE_DIR})
 	else()
-		find_package(Lua51 REQUIRED)
+		find_package(Lua REQUIRED)
 		set(LOVE_LUA_LIBRARY ${LUA_LIBRARY})
 		set(LOVE_LUA_INCLUDE_DIR ${LUA_INCLUDE_DIR})
 	endif()

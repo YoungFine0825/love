@@ -164,7 +164,12 @@
 
 #	define LOVE_ENABLE_ENET
 #	define LOVE_ENABLE_LUASOCKET
+
+//Lua版本小于5.3时，才启用LOVE_ENABLE_LUA53。love.cpp 527行会根据是否定义了这个宏，决定是否单独导入utf8库。
+#if LUA_VERSION_NUM < 503
 #	define LOVE_ENABLE_LUA53
+#endif
+
 #endif
 
 // Check we have a sane configuration

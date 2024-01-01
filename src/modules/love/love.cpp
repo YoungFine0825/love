@@ -523,8 +523,12 @@ int luaopen_love(lua_State *L)
 #ifdef LOVE_ENABLE_ENET
 	love::luax_preload(L, luaopen_enet, "enet");
 #endif
-#ifdef LOVE_ENABLE_LUA53
-	love::luax_preload(L, luaopen_luautf8, "utf8");
+
+//Lua版本小于5.3时，才需要单独导入5.3的utf8库。
+#if LUA_VERSION_NUM < 503
+	#ifdef LOVE_ENABLE_LUA53
+		love::luax_preload(L, luaopen_luautf8, "utf8");
+	#endif
 #endif
 
 #ifdef LOVE_ENABLE_WINDOW
